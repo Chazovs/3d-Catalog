@@ -2,8 +2,13 @@
 
 namespace Chazov\Unimarket\Component\Builder;
 
+use Bitrix\Catalog\EO_CatalogIblock;
 use Bitrix\Catalog\EO_CatalogIblock_Collection;
-use Bitrix\Main\Loader;
+use Bitrix\Iblock\Iblock;
+use CFile;
+use Chazov\Unimarket\Component\Repository\CatalogRepository;
+use Chazov\Unimarket\Model\CatalogModel;
+use Chazov\Unimarket\Model\CategoryModel;
 use \Chazov\Unimarket\Model\Response\CatalogResponse;
 
 /**
@@ -12,7 +17,6 @@ use \Chazov\Unimarket\Model\Response\CatalogResponse;
  */
 class CatalogResponseBuilder implements BuilderInterface
 {
-
     /**
      * @var CatalogResponse
      */
@@ -23,11 +27,16 @@ class CatalogResponseBuilder implements BuilderInterface
      */
     private $catalogs;
 
+    /** @var CatalogRepository */
+    private $catalogRepository;
+
     /**
      * CatalogResponseBuilder constructor.
+     * @param CatalogRepository $catalogRepository
      */
-    public function __construct()
+    public function __construct(CatalogRepository $catalogRepository)
     {
+        $this->catalogRepository = $catalogRepository;
         $this->response = new CatalogResponse();
     }
 
@@ -46,6 +55,19 @@ class CatalogResponseBuilder implements BuilderInterface
      */
     public function build(): BuilderInterface
     {
+        foreach ($this->catalogs as $catalog) {
+            $model = new CatalogModel();
+            $iblock = $catalog->getIblock();
+            $model->name = $iblock->getName();
+            $model->iblockId = $catalog->getIblockId();
+            $model->code =  $iblock->getCode();
+            $model->imagePath = $this->catalogRepository->getImagePath($iblock->getPicture());
+            $model->categories = $this->catalogRepository->getCategoriesByIblockId($iblock->getId());
+            $model->items = $this->catalogRepository->getItemsByIblockId($iblock->getId());
+
+            $this->response->catalogs[$model->iblockId] = $model;
+        }
+
         return $this;
     }
 

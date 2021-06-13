@@ -108,7 +108,7 @@ class Container implements ContainerInterface
         return [
             Logger::class => [Constants::simpleType => ConfigProvider::getFilePath()],
             CatalogRepository::class =>[Constants::entity => Logger::class],
-            CatalogResponseBuilder::class => [],
+            CatalogResponseBuilder::class => [Constants::entity => CatalogRepository::class],
         ];
     }
 
