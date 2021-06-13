@@ -7,7 +7,6 @@ use Chazov\Unimarket\Component\ConfigProvider;
 use Chazov\Unimarket\Component\Constants;
 use Chazov\Unimarket\Component\Repository\CatalogRepository;
 use Chazov\Unimarket\Component\Logger\Logger;
-use Chazov\Unimarket\Component\Container\NotFoundException;
 use Chazov\Unimarket\Service\CatalogService;
 use ReflectionClass;
 use ReflectionException;

@@ -4,8 +4,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) {
 }
 
 $arComponentDescription = [
-    "NAME"        => GetMessage("COMP_MAIN_USER_REGISTER_TITLE"),
-    "DESCRIPTION" => GetMessage("COMP_MAIN_USER_REGISTER_DESCR"),
+    "NAME"        => GetMessage("COMP_NAME"),
+    "DESCRIPTION" => GetMessage("COMP_DESCRIPTION"),
     "PATH"        => [
         "ID"    => "utility",
         "CHILD" => [

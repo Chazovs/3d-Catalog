@@ -21,7 +21,7 @@ class Logger implements LoggerInterface
     /**
      * Interpolates context values into the message placeholders.
      */
-    function interpolate($message, array $context = []): string
+    public function interpolate($message, array $context = []): string
     {
         // build a replacement array with braces around the context keys
         $replace = [];
@@ -82,7 +82,7 @@ class Logger implements LoggerInterface
      * @param string $message
      * @param array $context
      */
-    public function log($level, string $message, array $context = [])
+    public function log($level, string $message, array $context = []): void
     {
         if (count($context) > 0) {
             $resultMsg = $level. ': [' . date('Y-m-d H:i:s') . '] '  . $this->interpolate($message, $context);

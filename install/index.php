@@ -7,7 +7,7 @@ IncludeModuleLangFile(__FILE__);
  */
 class chazov_unimarket extends CModule
 {
-    public $MODULE_ID = "chazov.unimarket";
+    public $MODULE_ID = 'chazov.unimarket';
     public $MODULE_VERSION;
     public $MODULE_VERSION_DATE;
     public $MODULE_NAME;
@@ -49,20 +49,7 @@ class chazov_unimarket extends CModule
         return true;
     }
 
-    function InstallFiles()
-    {
-        CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/dv_module/install/components",
-            $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
-        return true;
-    }
-
-    function UnInstallFiles()
-    {
-        DeleteDirFilesEx("/local/components/dv");
-        return true;
-    }
-
-    private function copyFiles()
+    private function copyFiles(): void
     {
         CopyDirFiles(
             $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/export',
@@ -73,7 +60,11 @@ class chazov_unimarket extends CModule
         );
     }
 
-    private function deleteFiles()
+    private function deleteFiles(): void
     {
+        DeleteDirFiles(
+            $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/export',
+            $_SERVER['DOCUMENT_ROOT']
+        );
     }
 }
