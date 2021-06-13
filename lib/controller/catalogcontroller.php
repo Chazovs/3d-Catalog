@@ -2,58 +2,41 @@
 
 namespace Chazov\Unimarket\Controller;
 
-use Bitrix\Catalog\CatalogIblockTable;
 use Bitrix\Catalog\EO_CatalogIblock_Collection;
-use Bitrix\Catalog\EO_Product;
-use Bitrix\Iblock\Iblock;
 use Bitrix\Main\Engine\Controller;
-use Bitrix\Main\Loader;
-use Bitrix\Sale\ProductTable;
+use Chazov\Unimarket\Component\Builder\CatalogResponseBuilder;
+use Chazov\Unimarket\Component\Container\NotFoundException;
 use Chazov\Unimarket\Component\Repository\CatalogRepository;
+use Chazov\Unimarket\Model\Response\AbstractResponse;
+use Chazov\Unimarket\Model\Response\EmptyResponse;
 
-class Catalog extends Controller
+class CatalogController extends Controller
 {
     /**
-     * @return string
+     * @return AbstractResponse
      */
-    public function getCatalogAction(): string
+    public function getCatalogAction(): AbstractResponse
     {
-        $repository = new CatalogRepository();
+        global $uniContainer;
 
-        /** @var EO_CatalogIblock_Collection $catalogs */
-        $catalogs = $repository->getCatalogs();
+        try {
+            /** @var CatalogRepository $repository */
+            $repository = $uniContainer->get(CatalogRepository::class);
 
-        $catalogs = CatalogIblockTable::query()
-            ->setSelect(['IBLOCK_ID', 'IBLOCK'])
-            ->where('PRODUCT_IBLOCK_ID', 0)
-            ->exec()
-            ->fetchCollection();
+            /** @var EO_CatalogIblock_Collection $catalogs */
+            $catalogs = $repository->getCatalogs();
 
+            /** @var CatalogResponseBuilder $responseBuilder */
+            $responseBuilder = $uniContainer->get(CatalogResponseBuilder::class);
 
-      foreach ($catalogs as $catalog){
-         /** @var Iblock $iblockProducts */
-          $iblockProducts = $catalog
-              ->getIblock();
-
-
-          /** @var  $product */
-          foreach ($iblockProducts as $product) {
-$product->getId();
-          }
-      }
-
-      /* $products = ProductTable::query()->exec()->fetchCollection();
-
-        foreach ($products as $product) {
-$product->getId();
-$x = $product->getId();
-$y = 2;
-        }*/
-        return '';
+            return $responseBuilder->setCatalogs($catalogs)->build()->getResult();
+        } catch (NotFoundException $exception) {
+            return new EmptyResponse($exception->getMessage(), false);
+        }
     }
 }
 
-/*BX.ajax.runAction('chazov:unimarket.api.catalog.getcatalog',
+/*BX.ajax.runAction('chazov:unimarket.api.catalogcontroller.getcatalog',
                 {
                     method: 'POST',
                     data:   {
