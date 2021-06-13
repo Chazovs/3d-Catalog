@@ -2,13 +2,11 @@
 
 namespace Chazov\Unimarket\Controller;
 
-use Bitrix\Catalog\EO_CatalogIblock_Collection;
 use Bitrix\Main\Engine\Controller;
-use Chazov\Unimarket\Component\Builder\CatalogResponseBuilder;
 use Chazov\Unimarket\Component\Container\NotFoundException;
-use Chazov\Unimarket\Component\Repository\CatalogRepository;
 use Chazov\Unimarket\Model\Response\AbstractResponse;
 use Chazov\Unimarket\Model\Response\EmptyResponse;
+use Chazov\Unimarket\Service\CatalogService;
 
 class CatalogController extends Controller
 {
@@ -20,16 +18,10 @@ class CatalogController extends Controller
         global $uniContainer;
 
         try {
-            /** @var CatalogRepository $repository */
-            $repository = $uniContainer->get(CatalogRepository::class);
+            /** @var CatalogService $service */
+            $service = $uniContainer->get(CatalogService::class);
 
-            /** @var EO_CatalogIblock_Collection $catalogs */
-            $catalogs = $repository->getCatalogs();
-
-            /** @var CatalogResponseBuilder $responseBuilder */
-            $responseBuilder = $uniContainer->get(CatalogResponseBuilder::class);
-
-            return $responseBuilder->setCatalogs($catalogs)->build()->getResult();
+            return $service->getCatalog();
         } catch (NotFoundException $exception) {
             return new EmptyResponse($exception->getMessage(), false);
         }

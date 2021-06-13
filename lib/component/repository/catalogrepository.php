@@ -11,11 +11,8 @@ use Bitrix\Catalog\ProductTable;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\EO_Element;
 use Bitrix\Iblock\EO_Section;
-use Bitrix\Iblock\Iblock;
-use Bitrix\Iblock\IblockTable;
 use Bitrix\Iblock\SectionTable;
 use Bitrix\Main\ArgumentException;
-use Bitrix\Main\Entity\ReferenceField;
 use Bitrix\Main\Loader;
 use Bitrix\Main\LoaderException;
 use Bitrix\Main\ObjectPropertyException;
@@ -40,13 +37,9 @@ class CatalogRepository
     /**
      * CatalogRepository constructor.
      *
-     * @throws LoaderException
      */
     public function __construct(LoggerInterface $logger)
     {
-        Loader::includeModule('sale');
-        Loader::includeModule('catalog');
-
         $this->logger = $logger;
     }
 

@@ -24,6 +24,8 @@ class CatalogModel
     /** @var string $imagePath*/
     public $imagePath;
 
-    /** @var ItemModel[] $items */
-    public $items;
+    /**
+     * @var int
+     */
+    public $itemCount;
 }

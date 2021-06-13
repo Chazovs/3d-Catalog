@@ -30,7 +30,9 @@ class chazov_unimarket extends CModule
      */
     public function DoInstall(): bool
     {
-        RegisterModule("chazov.unimarket");
+        $this->copyFiles();
+
+        RegisterModule($this->MODULE_ID);
 
         return true;
     }
@@ -40,8 +42,38 @@ class chazov_unimarket extends CModule
      */
     public function DoUninstall(): bool
     {
-        UnRegisterModule("chazov.unimarket");
+        $this->deleteFiles();
+
+        UnRegisterModule($this->MODULE_ID);
 
         return true;
+    }
+
+    function InstallFiles()
+    {
+        CopyDirFiles($_SERVER["DOCUMENT_ROOT"]."/local/modules/dv_module/install/components",
+            $_SERVER["DOCUMENT_ROOT"]."/bitrix/components", true, true);
+        return true;
+    }
+
+    function UnInstallFiles()
+    {
+        DeleteDirFilesEx("/local/components/dv");
+        return true;
+    }
+
+    private function copyFiles()
+    {
+        CopyDirFiles(
+            $_SERVER['DOCUMENT_ROOT'] . '/bitrix/modules/' . $this->MODULE_ID . '/install/export',
+            $_SERVER['DOCUMENT_ROOT'],
+            true,
+            true,
+            false
+        );
+    }
+
+    private function deleteFiles()
+    {
     }
 }

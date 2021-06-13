@@ -5,8 +5,8 @@ namespace Chazov\Unimarket\Model\Response;
 abstract class AbstractResponse
 {
     /** @var bool */
-    public $success;
+    public $success = false;
 
     /** @var string */
-    public $errMsg;
+    public $errMsg = [];
 }

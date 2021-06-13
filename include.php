@@ -1,8 +1,12 @@
 <?php
 
+use Bitrix\Main\Loader;
 use Chazov\Unimarket\Component\Container\Container;
 use Chazov\Unimarket\Component\Container\LockServiceException;
 use Chazov\Unimarket\Component\Container\NotFoundException;
+
+Loader::includeModule('sale');
+Loader::includeModule('catalog');
 
 global $uniContainer;
 

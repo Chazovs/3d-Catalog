@@ -8,6 +8,7 @@ use Chazov\Unimarket\Component\Constants;
 use Chazov\Unimarket\Component\Repository\CatalogRepository;
 use Chazov\Unimarket\Component\Logger\Logger;
 use Chazov\Unimarket\Component\Container\NotFoundException;
+use Chazov\Unimarket\Service\CatalogService;
 use ReflectionClass;
 use ReflectionException;
 
@@ -42,7 +43,6 @@ class Container implements ContainerInterface
         }
 
         try {
-
             if (!isset($this->serviceStore[$id])) {
                 $this->serviceStore[$id] = $this->createService($id);
             }
@@ -71,7 +71,7 @@ class Container implements ContainerInterface
      */
     private function createService(string $serviceName)
     {
-        if (isset($this->serviceStore[$serviceName]['lock'])){
+        if (isset($this->serviceStore[$serviceName]['lock'])) {
             throw new LockServiceException();
         }
 
@@ -85,7 +85,7 @@ class Container implements ContainerInterface
 
         $arguments = $this->getArguments($this->servicesConfigs[$serviceName]);
 
-       return $reflector->newInstanceArgs($arguments);
+        return $reflector->newInstanceArgs($arguments);
     }
 
     /**
@@ -93,7 +93,7 @@ class Container implements ContainerInterface
      * @throws LockServiceException
      * @throws NotFoundException
      */
-    public function configContainer()
+    public function configContainer(): void
     {
         foreach ($this->servicesConfigs as $serviceName => $serviceConfig) {
             $this->serviceStore[$serviceName]['service'] = $this->createService($serviceName);
@@ -106,10 +106,36 @@ class Container implements ContainerInterface
     private function getContainerConfig(): array
     {
         return [
-            Logger::class => [Constants::simpleType => ConfigProvider::getFilePath()],
-            CatalogRepository::class =>[Constants::entity => Logger::class],
-            CatalogResponseBuilder::class => [Constants::entity => CatalogRepository::class],
+            Logger::class                 => [
+                [
+                    'type'  => Constants::simpleType,
+                    'value' => ConfigProvider::getFilePath(),
+                ],
+            ],
+            CatalogRepository::class      => [
+                [
+                    'type'  => Constants::entity,
+                    'value' => Logger::class,
+                ],
+            ],
+            CatalogResponseBuilder::class => [
+                [
+                    'type'  => Constants::entity,
+                    'value' => CatalogRepository::class,
+                ],
+            ],
+            CatalogService::class         => [
+                [
+                    'type'  => Constants::entity,
+                    'value' => CatalogRepository::class,
+                ],
+                [
+                    'type'  => Constants::entity,
+                    'value' => CatalogResponseBuilder::class,
+                ],
+            ],
         ];
+
     }
 
     /**
@@ -122,10 +148,10 @@ class Container implements ContainerInterface
         $resultArgs = [];
 
         foreach ($arguments as $key => $argument) {
-            if ($key === Constants::simpleType) {
-                $resultArgs[] = $argument;
+            if ($argument['type'] === Constants::simpleType) {
+                $resultArgs[] = $argument['value'];
             } else {
-                $resultArgs[] = $this->get($argument);
+                $resultArgs[] = $this->get($argument['value']);
             }
         }
 
