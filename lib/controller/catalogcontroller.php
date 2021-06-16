@@ -8,6 +8,10 @@ use Chazov\Unimarket\Model\Response\AbstractResponse;
 use Chazov\Unimarket\Model\Response\EmptyResponse;
 use Chazov\Unimarket\Service\CatalogService;
 
+/**
+ * Class CatalogController
+ * @package Chazov\Unimarket\Controller
+ */
 class CatalogController extends Controller
 {
     /**
