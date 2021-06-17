@@ -10,6 +10,7 @@
         return <?= json_encode($arResult['CATALOG']) ?>;
     }
 </script>
+
 <div id="unity-container" class="unity-desktop">
     <canvas id="unity-canvas" width=960 height=600></canvas>
     <div id="unity-loading-bar">
@@ -110,6 +111,9 @@
             progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
             loadingBar.style.display = "none";
+
+            /*unityInstance.SendMessage('MarketService', 'CreateMarket', <?= json_encode($arResult['CATALOG']) ?>);*/
+            unityInstance.SendMessage('Main', 'setBxSessId', BX.bitrix_sessid());
             fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
             };
