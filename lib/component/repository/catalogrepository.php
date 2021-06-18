@@ -87,14 +87,14 @@ class CatalogRepository
 
             /** @var EO_Section $section */
             foreach ($sections as $section) {
-                $model = new CategoryModel();
-                $model->name = $section->getName();
-                $model->id = $section->getId();
-                $model->picture = $this->getImagePath($section->getPicture());
-                $model->depthLevel = $section->getDepthLevel();
-                $model->parentSection = $section->getParentSection();
+                $categoryModel = new CategoryModel();
+                $categoryModel->name = $section->getName();
+                $categoryModel->id = $section->getId();
+                $categoryModel->picture = $this->getImagePath($section->getPicture());
+                $categoryModel->depthLevel = $section->getDepthLevel();
+                $categoryModel->parentSection = $section->getParentSection();
 
-                $categoryModels[$section->getId()] = $model;
+                $categoryModels[$section->getId()] = $categoryModel;
             }
         } catch (ObjectPropertyException | ArgumentException | SystemException $exception) {
             $this->logger->log(LogLevel::ERROR, $exception->getMessage());
@@ -131,6 +131,7 @@ class CatalogRepository
                     ]
                 )
                 ->where('IBLOCK_ELEMENT.IBLOCK_ID', $iblockId)
+                ->where('IBLOCK_ELEMENT.ACTIVE', true)
                 ->fetchCollection();
 
             /** @var EO_Product $item */

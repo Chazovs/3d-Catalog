@@ -54,20 +54,21 @@ class CatalogResponseBuilder implements BuilderInterface
     public function build(): BuilderInterface
     {
         foreach ($this->catalogs as $catalog) {
-            $model = new CatalogModel();
+            $catalogModel = new CatalogModel();
 
             $iblock = $catalog->getIblock();
-            $model->name = $iblock->getName();
-            $model->iblockId = $catalog->getIblockId();
-            $model->code = $iblock->getCode();
-            $model->imagePath = $this->catalogRepository->getImagePath($iblock->getPicture());
-            $model->categories = $this->catalogRepository->getCategoriesByIblockId($iblock->getId());
+            $catalogModel->name = $iblock->getName();
+            $catalogModel->iblockId = $catalog->getIblockId();
+            $catalogModel->code = $iblock->getCode();
+            $catalogModel->imagePath = $this->catalogRepository->getImagePath($iblock->getPicture());
+            $catalogModel->categories = $this->catalogRepository->getCategoriesByIblockId($iblock->getId());
             $items = $this->catalogRepository->getItemsByIblockId($iblock->getId());
-            $model->itemCount = count($items);
+            $catalogModel->itemCount = count($items);
 
-            $this->addItemsToCategory($model->categories, $items);
+            $this->addItemsToCategory($catalogModel->categories, $items);
+            $this->dropEmptyCategories($catalogModel->categories);
 
-            $this->response->catalogs[$model->iblockId] = $model;
+            $this->response->catalogs[$catalogModel->iblockId] = $catalogModel;
         }
 
         $this->response->success = true;
@@ -102,6 +103,18 @@ class CatalogResponseBuilder implements BuilderInterface
     {
         foreach ($items as $item) {
             $categories[$item->categoryId]->items[] = $item;
+        }
+    }
+
+    /**
+     * @param CategoryModel[] $categories
+     */
+    private function dropEmptyCategories(array &$categories): void
+    {
+        foreach ($categories as $key=>$category) {
+            if (count($category->items) === 0) {
+                unset($categories[$key]);
+            }
         }
     }
 }

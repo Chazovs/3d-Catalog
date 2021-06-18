@@ -30,6 +30,22 @@ class CatalogController extends Controller
             return new EmptyResponse($exception->getMessage(), false);
         }
     }
+
+    /**
+     * @return \array[][]
+     */
+    public function configureActions(): array
+    {
+        return [
+            'getCatalog' => [
+                '-prefilters' => [
+                    //todo убрать это при деплое
+                    \Bitrix\Main\Engine\ActionFilter\Authentication::class,
+                    \Bitrix\Main\Engine\ActionFilter\Csrf::class
+                ],
+            ],
+        ];
+    }
 }
 
 /*BX.ajax.runAction('chazov:unimarket.api.catalogcontroller.getcatalog',

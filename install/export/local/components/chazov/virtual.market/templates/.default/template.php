@@ -113,7 +113,8 @@
             loadingBar.style.display = "none";
 
             /*unityInstance.SendMessage('MarketService', 'CreateMarket', <?= json_encode($arResult['CATALOG']) ?>);*/
-            unityInstance.SendMessage('Main', 'setBxSessId', BX.bitrix_sessid());
+            unityInstance.SendMessage('Main', 'SetBxSessId', BX.bitrix_sessid());
+            unityInstance.SendMessage('Main', 'SetSiteId', '<?= SITE_ID ?>');
             fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
             };
