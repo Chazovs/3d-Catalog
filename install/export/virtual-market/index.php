@@ -12,7 +12,9 @@ $APPLICATION->SetTitle('Виртуальный магазин');
 $APPLICATION->IncludeComponent(
     'chazov:virtual.market',
     '',
-    []
+    [
+        'ConfirmOrderUrl' => '/personal/order/make/'
+    ]
 );
 ?>
 

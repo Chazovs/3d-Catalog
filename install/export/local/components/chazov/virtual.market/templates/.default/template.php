@@ -1,5 +1,6 @@
 <?php
 /** @var $arResult */
+/** @var $arParams */
 ?>
 
 <link rel="shortcut icon" href="/virtual-market/TemplateData/favicon.ico">
@@ -115,6 +116,7 @@
             /*unityInstance.SendMessage('MarketService', 'CreateMarket', <?= json_encode($arResult['CATALOG']) ?>);*/
             unityInstance.SendMessage('Main', 'SetBxSessId', BX.bitrix_sessid());
             unityInstance.SendMessage('Main', 'SetSiteId', '<?= SITE_ID ?>');
+            unityInstance.SendMessage('Main', 'SetConfirmOrderUrl', '<?= $arParams["ConfirmOrderUrl"] ?>');
             fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
             };
