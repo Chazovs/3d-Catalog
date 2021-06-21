@@ -85,9 +85,14 @@ class Logger implements LoggerInterface
     public function log($level, string $message, array $context = []): void
     {
         if (count($context) > 0) {
-            $resultMsg = $level. ': [' . date('Y-m-d H:i:s') . '] '  . $this->interpolate($message, $context);
+            $resultMsg = date('Y-m-d H:i:s')
+                . ' '
+                .  $level
+                . ' --- '
+                . $this->interpolate($message, $context)
+                . "\n";
         } else {
-            $resultMsg = $level. ': [' . date('Y-m-d H:i:s') . '] '  . $message;
+            $resultMsg = date('Y-m-d H:i:s') . ' ' .  $level . ' --- '  .  $message . "\n";
         }
 
         $this->write($resultMsg);
@@ -98,6 +103,6 @@ class Logger implements LoggerInterface
      */
     private function write(string $resultMsg): void
     {
-        file_put_contents( $this->filePath , $resultMsg , FILE_APPEND);
+        file_put_contents($this->filePath, $resultMsg, FILE_APPEND);
     }
 }
