@@ -117,6 +117,7 @@
             unityInstance.SendMessage('Main', 'SetBxSessId', BX.bitrix_sessid());
             unityInstance.SendMessage('Main', 'SetSiteId', '<?= SITE_ID ?>');
             unityInstance.SendMessage('Main', 'SetConfirmOrderUrl', '<?= $arParams["ConfirmOrderUrl"] ?>');
+            unityInstance.SendMessage('Main', 'SetServerName', '<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] ?>');
             fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
             };

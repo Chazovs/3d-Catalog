@@ -5,6 +5,7 @@ namespace Chazov\Unimarket\Controller;
 use Bitrix\Catalog\Product\Basket;
 use Bitrix\Currency\CurrencyManager;
 use Bitrix\Main\Context;
+use Bitrix\Main\Engine\ActionFilter\Authentication;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Sale\BasketItem;
 use Bitrix\Sale\Fuser;
@@ -61,6 +62,10 @@ class BasketController extends Controller
 
             /** @var BasketItem $item */
             foreach ($basket->getBasketItems() as $item) {
+                if (empty($item->getId())) {
+                    continue;
+                }
+
                 $itemModel = new BasketItemModel();
                 $itemModel->price = $item->getPrice();
                 $itemModel->itemId = $item->getId();
@@ -85,8 +90,7 @@ class BasketController extends Controller
             'addToBasket' => [
                 '-prefilters' => [
                     //todo убрать это при деплое
-                    \Bitrix\Main\Engine\ActionFilter\Authentication::class,
-                    \Bitrix\Main\Engine\ActionFilter\Csrf::class,
+                    Authentication::class,
                 ],
             ],
         ];

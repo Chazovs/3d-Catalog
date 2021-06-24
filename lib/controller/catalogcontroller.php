@@ -2,6 +2,7 @@
 
 namespace Chazov\Unimarket\Controller;
 
+use Bitrix\Main\Engine\ActionFilter\Authentication;
 use Bitrix\Main\Engine\Controller;
 use Chazov\Unimarket\Component\Container\NotFoundException;
 use Chazov\Unimarket\Model\Response\AbstractResponse;
@@ -39,9 +40,7 @@ class CatalogController extends Controller
         return [
             'getCatalog' => [
                 '-prefilters' => [
-                    //todo убрать это при деплое
-                    \Bitrix\Main\Engine\ActionFilter\Authentication::class,
-                    \Bitrix\Main\Engine\ActionFilter\Csrf::class
+                    Authentication::class,
                 ],
             ],
         ];

@@ -2,9 +2,8 @@
 
 namespace Chazov\Unimarket\Model\Response;
 
-use Chazov\Unimarket\Model\CatalogModel;
-use Chazov\Unimarket\Model\CategoryModel;
-use Chazov\Unimarket\Model\ItemModel;
+use Chazov\Unimarket\Model\BasketItemModel;
+
 
 class BasketResponse extends AbstractResponse
 {
