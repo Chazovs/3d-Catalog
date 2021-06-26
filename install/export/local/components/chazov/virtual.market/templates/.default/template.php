@@ -5,6 +5,7 @@
 
 <link rel="shortcut icon" href="/virtual-market/TemplateData/favicon.ico">
 <link rel="stylesheet" href="/virtual-market/TemplateData/style.css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <script>
     function getCatalog() {
@@ -112,12 +113,10 @@
             progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
             loadingBar.style.display = "none";
-
-            /*unityInstance.SendMessage('MarketService', 'CreateMarket', <?= json_encode($arResult['CATALOG']) ?>);*/
             unityInstance.SendMessage('Main', 'SetBxSessId', BX.bitrix_sessid());
-            unityInstance.SendMessage('Main', 'SetSiteId', '<?= SITE_ID ?>');
+            unityInstance.SendMessage('Main', 'SetSiteId', BX.message('SITE_ID'));
             unityInstance.SendMessage('Main', 'SetConfirmOrderUrl', '<?= $arParams["ConfirmOrderUrl"] ?>');
-            unityInstance.SendMessage('Main', 'SetServerName', '<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'] ?>');
+            unityInstance.SendMessage('Main', 'SetServerName', window.location.href);
             fullscreenButton.onclick = () => {
                 unityInstance.SetFullscreen(1);
             };
