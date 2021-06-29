@@ -73,11 +73,11 @@ class CatalogRepository
     /**
      * @param int $iblockId
      *
-     * @return CategoryModel[]
+     * @return CategoryModel[]|null
      */
-    public function getCategoriesByIblockId(int $iblockId): array
+    public function getCategoriesByIblockId(int $iblockId): ?array
     {
-        $categoryModels = [];
+        $categoryModels = null;
 
         try {
             $sections = SectionTable::query()

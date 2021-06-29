@@ -15,7 +15,7 @@ class CatalogModel
     /** @var int $iblockId */
     public $iblockId;
 
-    /** @var CategoryModel[] $categories */
+    /** @var CategoryModel[]|null $categories */
     public $categories;
 
     /** @var string $code */

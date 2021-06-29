@@ -8,6 +8,7 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ArgumentTypeException;
 use Bitrix\Main\Context;
 use Bitrix\Main\Engine\ActionFilter\Authentication;
+use Bitrix\Main\Engine\ActionFilter\Csrf;
 use Bitrix\Main\Engine\Controller;
 use Bitrix\Main\NotImplementedException;
 use Bitrix\Sale\BasketBase;
@@ -125,16 +126,19 @@ class BasketController extends Controller
             'getBasket' => [
                 '-prefilters' => [
                     Authentication::class,
+                    Csrf::class //TODO убрать перед релизом
                 ],
             ],
             'addToBasket' => [
                 '-prefilters' => [
                     Authentication::class,
+                    Csrf::class //TODO убрать перед релизом
                 ],
             ],
             'deleteFromBasket' => [
                 '-prefilters' => [
                     Authentication::class,
+                    Csrf::class //TODO убрать перед релизом
                 ],
             ],
         ];

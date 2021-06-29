@@ -68,7 +68,9 @@ class CatalogResponseBuilder implements BuilderInterface
             $this->addItemsToCategory($catalogModel->categories, $items);
             $this->dropEmptyCategories($catalogModel->categories);
 
-            $this->response->catalogs[$catalogModel->iblockId] = $catalogModel;
+            if (!empty($catalogModel->categories)) {
+                $this->response->catalogs[$catalogModel->iblockId] = $catalogModel;
+            }
         }
 
         $this->response->success = true;
@@ -96,21 +98,29 @@ class CatalogResponseBuilder implements BuilderInterface
     }
 
     /**
-     * @param CategoryModel[] $categories
+     * @param CategoryModel[]|null $categories
      * @param ItemModel[] $items
      */
-    private function addItemsToCategory(array &$categories, array $items): void
+    private function addItemsToCategory(?array &$categories, array $items): void
     {
+        if (null === $categories){
+            return;
+        }
+
         foreach ($items as $item) {
             $categories[$item->categoryId]->items[] = $item;
         }
     }
 
     /**
-     * @param CategoryModel[] $categories
+     * @param CategoryModel[]|null $categories
      */
-    private function dropEmptyCategories(array &$categories): void
+    private function dropEmptyCategories(?array &$categories): void
     {
+        if (null === $categories) {
+            return;
+        }
+
         foreach ($categories as $key=>$category) {
             if (count($category->items) === 0) {
                 unset($categories[$key]);
