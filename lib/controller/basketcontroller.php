@@ -30,6 +30,30 @@ use Throwable;
 class BasketController extends Controller
 {
     /**
+     * @return \array[][]
+     */
+    public function configureActions(): array
+    {
+        return [
+            'getBasket' => [
+                '-prefilters' => [
+                    Authentication::class,
+                ],
+            ],
+            'addToBasket' => [
+                '-prefilters' => [
+                    Authentication::class,
+                ],
+            ],
+            'deleteFromBasket' => [
+                '-prefilters' => [
+                    Authentication::class,
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @param int $itemId
      * @param int $quantity
      * @return BasketResponse
@@ -68,7 +92,6 @@ class BasketController extends Controller
 
         return $this->getBasketResponse($basket ?? null);
     }
-
 
     /**
      * @param BasketBase|null $basket
@@ -118,33 +141,6 @@ class BasketController extends Controller
     }
 
     /**
-     * @return \array[][]
-     */
-    public function configureActions(): array
-    {
-        return [
-            'getBasket' => [
-                '-prefilters' => [
-                    Authentication::class,
-                    Csrf::class //TODO убрать перед релизом
-                ],
-            ],
-            'addToBasket' => [
-                '-prefilters' => [
-                    Authentication::class,
-                    Csrf::class //TODO убрать перед релизом
-                ],
-            ],
-            'deleteFromBasket' => [
-                '-prefilters' => [
-                    Authentication::class,
-                    Csrf::class //TODO убрать перед релизом
-                ],
-            ],
-        ];
-    }
-
-    /**
      * @param int $itemId
      * @param int $quantity
      * @return BasketBase|null
@@ -178,7 +174,6 @@ class BasketController extends Controller
             $basket->save();
 
             return $basket;
-
         } catch (Throwable $exception) {
             $logger->log(LogLevel::ERROR, $exception->getMessage());
         }

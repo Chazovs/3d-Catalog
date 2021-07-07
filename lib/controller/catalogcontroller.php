@@ -42,21 +42,9 @@ class CatalogController extends Controller
             'getCatalog' => [
                 '-prefilters' => [
                     Authentication::class,
-                    Csrf::class//TODO убрать перед релизом
                 ],
             ],
         ];
     }
 }
 
-/*BX.ajax.runAction('chazov:unimarket.api.catalogcontroller.getcatalog',
-                {
-                    method: 'POST',
-                    data:   {
-    sessid: BX.bitrix_sessid(),
-                    }
-                }
-            ).then((response) => {
-    console.log(response.data)
-
-});*/
