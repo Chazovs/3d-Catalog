@@ -19,10 +19,12 @@ class chazov_unimarket extends CModule
      */
     public function __construct()
     {
-        $this->MODULE_VERSION = "0.0.1";
+        $this->MODULE_VERSION = "0.1";
         $this->MODULE_VERSION_DATE = "09.06.2021";
-        $this->MODULE_NAME = "Каталог на Юнити";
-        $this->MODULE_DESCRIPTION = "Каталог и корзина в 3д";
+        $this->MODULE_NAME = GetMessage('CHAZOV_MODULE_NAME');
+        $this->MODULE_DESCRIPTION = GetMessage('CHAZOV_MODULE_DESCRIPTION');
+        $this->PARTNER_NAME =GetMessage('MODULE_PARTNER_NAME');
+        $this->PARTNER_URI = GetMessage('MODULE_PARTNER_URI');
     }
 
     /**

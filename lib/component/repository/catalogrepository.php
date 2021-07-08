@@ -132,7 +132,7 @@ class CatalogRepository
                 )
                 ->where('IBLOCK_ELEMENT.IBLOCK_ID', $iblockId)
                 ->where('IBLOCK_ELEMENT.ACTIVE', true)
-                ->where('TYPE', ProductTable::TYPE_PRODUCT)
+                /*->where('TYPE', ProductTable::TYPE_PRODUCT)*/
                 ->fetchCollection();
 
             /** @var EO_Product $item */
