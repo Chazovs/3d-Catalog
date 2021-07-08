@@ -12,6 +12,8 @@ class chazov_unimarket extends CModule
     public $MODULE_VERSION_DATE;
     public $MODULE_NAME;
     public $MODULE_DESCRIPTION;
+    public $PARTNER_NAME;
+    public $PARTNER_URI;
     public $errors;
 
     /**
