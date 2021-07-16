@@ -8,9 +8,12 @@ use Bitrix\Catalog\EO_CatalogIblock_Collection;
 use Bitrix\Catalog\EO_Product;
 use Bitrix\Catalog\PriceTable;
 use Bitrix\Catalog\ProductTable;
+use Bitrix\Iblock\ElementPropertyTable;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\EO_Element;
 use Bitrix\Iblock\EO_Section;
+use Bitrix\Iblock\PropertyEnumerationTable;
+use Bitrix\Iblock\PropertyTable;
 use Bitrix\Iblock\SectionTable;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Loader;
@@ -18,6 +21,8 @@ use Bitrix\Main\LoaderException;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
 use CFile;
+use Chazov\Unimarket\Component\ConfigProvider;
+use Chazov\Unimarket\Component\Constants;
 use Chazov\Unimarket\Component\Logger\LoggerInterface;
 use Chazov\Unimarket\Component\Logger\LogLevel;
 use Chazov\Unimarket\Model\CategoryModel;
@@ -65,7 +70,7 @@ class CatalogRepository
      * @param int $getPicture
      * @return string|null
      */
-    public function getImagePath(int $getPicture): ?string
+    public function getFilePath(int $getPicture): ?string
     {
         return CFile::GetPath($getPicture);
     }
@@ -90,7 +95,7 @@ class CatalogRepository
                 $categoryModel = new CategoryModel();
                 $categoryModel->name = $section->getName();
                 $categoryModel->id = $section->getId();
-                $categoryModel->picture = $this->getImagePath($section->getPicture());
+                $categoryModel->picture = $this->getFilePath($section->getPicture());
                 $categoryModel->depthLevel = $section->getDepthLevel();
                 $categoryModel->parentSection = $section->getParentSection();
 
@@ -110,7 +115,7 @@ class CatalogRepository
     public function getItemsByIblockId(int $iblockId): array
     {
         $itemModels = [];
-
+        $x = ConfigProvider::getUniFieldIdForIblock($iblockId);
         try {
             $items = ProductTable::query()
                 ->setSelect(['*', 'ELEMENT', 'PRICE'])
@@ -132,7 +137,7 @@ class CatalogRepository
                 )
                 ->where('IBLOCK_ELEMENT.IBLOCK_ID', $iblockId)
                 ->where('IBLOCK_ELEMENT.ACTIVE', true)
-                /*->where('TYPE', ProductTable::TYPE_PRODUCT)*/
+                ->where('TYPE', ProductTable::TYPE_PRODUCT)
                 ->fetchCollection();
 
             /** @var EO_Product $item */
@@ -149,7 +154,8 @@ class CatalogRepository
                     ? $element->getPreviewText()
                     : $element->getDetailText();
                 $model->itemId = $item->getId();
-                $model->imagePath = $this->getImagePath(
+                $model->model3dPath = $this->getFilePath($this->get3dModelFileId($item->getId(), $iblockId));
+                $model->imagePath = $this->getFilePath(
                     $element->getDetailPicture()
                     ?? $element->getPreviewPicture()
                 );
@@ -163,5 +169,34 @@ class CatalogRepository
         }
 
         return $itemModels;
+    }
+
+    /**
+     * @param int $elementId
+     * @param int $iblockId
+     * @return int
+     */
+    private function get3dModelFileId(int $elementId, int $iblockId): int
+    {
+        try {
+            $element = ElementPropertyTable::query()
+                ->setSelect(['VALUE'])
+                ->where('IBLOCK_ELEMENT_ID', $elementId)
+                ->where('IBLOCK_PROPERTY_ID',  ConfigProvider::getUniFieldIdForIblock($iblockId))
+                ->fetchObject();
+
+            if (null === $element){
+                return 0;
+            }
+
+            return empty($element->getValue()) ? 0 : (int) $element->getValue();
+        } catch (ObjectPropertyException | ArgumentException | SystemException $exception) {
+            $this->logger->log(
+                LogLevel::ERROR,
+                sprintf('Не удалось получить номер ID 3д модели. %s', $exception->getMessage())
+            );
+        }
+
+        return 0;
     }
 }

@@ -16,6 +16,9 @@ class ItemModel
     public $imagePath;
 
     /** @var string */
+    public $model3dPath;
+
+    /** @var string */
     public $description;
 
     /** @var int $itemId */

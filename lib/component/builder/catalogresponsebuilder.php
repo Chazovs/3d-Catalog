@@ -60,9 +60,9 @@ class CatalogResponseBuilder implements BuilderInterface
             $catalogModel->name = $iblock->getName();
             $catalogModel->iblockId = $catalog->getIblockId();
             $catalogModel->code = $iblock->getCode();
-            $catalogModel->imagePath = $this->catalogRepository->getImagePath($iblock->getPicture());
+            $catalogModel->imagePath = $this->catalogRepository->getFilePath($iblock->getPicture());
             $catalogModel->categories = $this->catalogRepository->getCategoriesByIblockId($iblock->getId());
-            $items = $this->catalogRepository->getItemsByIblockId($iblock->getId());
+            $items = $this->catalogRepository->getItemsByIblockId($iblock->getId());//TODO вынести в билдер из репозитория
             $catalogModel->itemCount = count($items);
 
             $this->addItemsToCategory($catalogModel->categories, $items);
