@@ -2,8 +2,12 @@
 
 use Bitrix\Catalog\EO_CatalogIblock;
 use Bitrix\Catalog\EO_CatalogIblock_Collection;
+use Bitrix\Iblock\PropertyTable;
+use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Loader;
+use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\ORM\Entity;
+use Bitrix\Main\SystemException;
 use Chazov\Unimarket\Component\ConfigProvider;
 use Chazov\Unimarket\Component\Constants;
 use Chazov\Unimarket\Component\Container\Container;
@@ -32,6 +36,10 @@ class chazov_unimarket extends CModule
      * @var Container
      */
     private $uniContainer;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
     /**
      * chazov_unimarket constructor.
@@ -69,6 +77,8 @@ class chazov_unimarket extends CModule
         } catch (NotFoundException | ReflectionException $exception) {
             echo $exception->getMessage();
         }
+
+        $this->logger = $this->uniContainer->get(Logger::class);
     }
 
     /**
@@ -114,15 +124,28 @@ class chazov_unimarket extends CModule
         );
     }
 
-    private function createModelField()
+    private function createModelField(): void
     {
         try {
             $propsIds = [];
 
             /** @var EO_CatalogIblock $catalog */
             foreach ($this->getSimpleCatalogNumvers() as $catalog) {
+                $catalogId = $catalog->get('IBLOCK_ID');
+
+                $property = PropertyTable::query()
+                    ->setSelect(['ID'])
+                    ->where('CODE', Constants::UNIMARKET_MODEL)
+                    ->where('IBLOCK_ID', $catalogId)
+                    ->fetchObject();
+
+                if (null !== $property && null !== $property->getId()) {
+                    $propsIds[Constants::MODULE_PREFIX . $catalogId] =$property->getId();
+                    continue;
+                }
+
                 $prop = [
-                    "IBLOCK_ID"     => $catalog->get('IBLOCK_ID'),
+                    "IBLOCK_ID"     => $catalogId,
                     "CODE"          => Constants::UNIMARKET_MODEL,
                     "PROPERTY_TYPE" => 'F',
                     "ACTIVE"        => 'Y',
@@ -133,16 +156,15 @@ class chazov_unimarket extends CModule
 
                 if (!$propId = $iblockProperty->Add($prop)) {
                     /** @var Logger $logger */
-                    $logger = $this->uniContainer->get(Logger::class);
-                    $logger->log('ERROR', 'Не удалось создать свойство для хранения модели');
+                    $this->logger->log('ERROR', 'Не удалось создать свойство для хранения модели');
                 }
 
-                $propsIds[Constants::MODULE_PREFIX . $catalog->get('IBLOCK_ID')] = $propId;
+                $propsIds[Constants::MODULE_PREFIX . $catalogId] = $propId;
             }
 
             ConfigProvider::setUniFields($propsIds);
-        } catch (NotFoundException $exception) {
-            AddMessage2Log($exception->getMessage());
+        } catch (NotFoundException | ArgumentException | SystemException $exception) {
+            $this->logger->log('ERROR', $exception->getMessage());
         }
     }
 

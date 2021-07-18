@@ -154,7 +154,7 @@ class CatalogRepository
                     ? $element->getPreviewText()
                     : $element->getDetailText();
                 $model->itemId = $item->getId();
-                $model->model3dPath = $this->getFilePath($this->get3dModelFileId($item->getId(), $iblockId));
+                $model->modelPath = $this->getFilePath($this->get3dModelFileId($item->getId(), $iblockId));
                 $model->imagePath = $this->getFilePath(
                     $element->getDetailPicture()
                     ?? $element->getPreviewPicture()

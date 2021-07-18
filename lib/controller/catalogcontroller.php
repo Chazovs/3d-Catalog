@@ -17,6 +17,21 @@ use Chazov\Unimarket\Service\CatalogService;
 class CatalogController extends Controller
 {
     /**
+     * @return \array[][]
+     */
+    public function configureActions(): array
+    {
+        return [
+            'getCatalog' => [
+                '-prefilters' => [
+                    Authentication::class,
+                    Csrf::class
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @return AbstractResponse
      */
     public function getCatalogAction(): AbstractResponse
@@ -31,20 +46,6 @@ class CatalogController extends Controller
         } catch (NotFoundException $exception) {
             return new EmptyResponse($exception->getMessage(), false);
         }
-    }
-
-    /**
-     * @return \array[][]
-     */
-    public function configureActions(): array
-    {
-        return [
-            'getCatalog' => [
-                '-prefilters' => [
-                    Authentication::class,
-                ],
-            ],
-        ];
     }
 }
 
