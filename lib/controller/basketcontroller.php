@@ -38,19 +38,19 @@ class BasketController extends Controller
             'getBasket' => [
                 '-prefilters' => [
                     Authentication::class,
-                    Csrf::class
+                    //Csrf::class
                 ],
             ],
             'addToBasket' => [
                 '-prefilters' => [
                     Authentication::class,
-                    Csrf::class
+                    //Csrf::class
                 ],
             ],
             'deleteFromBasket' => [
                 '-prefilters' => [
                     Authentication::class,
-                    Csrf::class
+                   // Csrf::class
                 ],
             ],
         ];

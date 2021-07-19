@@ -25,7 +25,7 @@ class CatalogController extends Controller
             'getCatalog' => [
                 '-prefilters' => [
                     Authentication::class,
-                    Csrf::class
+                    //Csrf::class
                 ],
             ],
         ];
