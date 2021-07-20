@@ -141,15 +141,11 @@ class CatalogRepository
                 ->fetchCollection();
                 //TODO добавить проверки на доступность https://dev.1c-bitrix.ru/api_help/catalog/available.php
 
-
-            /** @var EO_Product $item */
             foreach ($items as $item) {
                 $model = new ItemModel();
-
                 /** @var EO_Element $element */
                 $element = $item->get('ELEMENT');
                 $priceTable = $item->get('PRICE');
-
                 $model->name = $element->getName();
                 $model->description
                     = !empty($element->getPreviewText())

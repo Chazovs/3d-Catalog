@@ -1,6 +1,6 @@
 <?php
 
-$MESS ['CHAZOV_MODULE_NAME'] = '3D ÐšÐ°Ñ‚Ð°Ð»Ð¾Ð³';
-$MESS ['CHAZOV_MODULE_DESCRIPTION'] = 'ÐšÐ°Ñ‚Ð°Ð»Ð¾Ð³ Ð¸ ÐºÐ¾Ñ€Ð·Ð¸Ð½Ð° Ð² 3Ð´';
+$MESS ['CHAZOV_MODULE_NAME'] = '3D Êàòàëîã';
+$MESS ['CHAZOV_MODULE_DESCRIPTION'] = 'Êàòàëîã è êîðçèíà â 3ä';
 $MESS ['MODULE_PARTNER_NAME'] = 'Chazov';
 $MESS ['MODULE_PARTNER_URI'] = 'https://github.com/Chazovs';
