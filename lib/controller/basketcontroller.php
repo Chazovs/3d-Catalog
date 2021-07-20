@@ -155,17 +155,18 @@ class BasketController extends Controller
 
             /** @var Logger $logger */
             $logger = $uniContainer->get(Logger::class);
-
             $basket = SaleBasket::loadItemsForFUser(
                 Fuser::getId(),
                 Context::getCurrent()->getSite()
             );
 
+            $existItem = $basket->getExistsItem('catalog', $itemId);
             //TODO заменить на  Bitrix\Catalog\Product\Basket::addProduct($fields)
-            if ($existItem = $basket->getExistsItem('catalog', $itemId)) {
+            if (null !== $existItem) {
                 $existItem->setField('QUANTITY', $existItem->getQuantity() + $quantity);
             } else {
                 $newItem = $basket->createItem('catalog', $itemId);
+
                 $newItem->setFields([
                     'QUANTITY'               => $quantity,
                     'CURRENCY'               => CurrencyManager::getBaseCurrency(),

@@ -5,8 +5,6 @@ use Bitrix\Catalog\EO_CatalogIblock_Collection;
 use Bitrix\Iblock\PropertyTable;
 use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Loader;
-use Bitrix\Main\ObjectPropertyException;
-use Bitrix\Main\ORM\Entity;
 use Bitrix\Main\SystemException;
 use Chazov\Unimarket\Component\ConfigProvider;
 use Chazov\Unimarket\Component\Constants;
@@ -14,7 +12,6 @@ use Chazov\Unimarket\Component\Container\Container;
 use Chazov\Unimarket\Component\Container\LockServiceException;
 use Chazov\Unimarket\Component\Container\NotFoundException;
 use Chazov\Unimarket\Component\Logger\Logger;
-use Chazov\Unimarket\Component\Logger\LoggerInterface;
 use Chazov\Unimarket\Component\Repository\CatalogRepository;
 
 IncludeModuleLangFile(__FILE__);

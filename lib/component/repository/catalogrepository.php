@@ -115,7 +115,7 @@ class CatalogRepository
     public function getItemsByIblockId(int $iblockId): array
     {
         $itemModels = [];
-        $x = ConfigProvider::getUniFieldIdForIblock($iblockId);
+
         try {
             $items = ProductTable::query()
                 ->setSelect(['*', 'ELEMENT', 'PRICE'])
@@ -137,8 +137,10 @@ class CatalogRepository
                 )
                 ->where('IBLOCK_ELEMENT.IBLOCK_ID', $iblockId)
                 ->where('IBLOCK_ELEMENT.ACTIVE', true)
-                ->where('TYPE', ProductTable::TYPE_PRODUCT)
+                ->whereIn('TYPE', [ProductTable::TYPE_PRODUCT, ProductTable::TYPE_SKU])
                 ->fetchCollection();
+                //TODO добавить проверки на доступность https://dev.1c-bitrix.ru/api_help/catalog/available.php
+
 
             /** @var EO_Product $item */
             foreach ($items as $item) {

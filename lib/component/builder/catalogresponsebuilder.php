@@ -53,6 +53,7 @@ class CatalogResponseBuilder implements BuilderInterface
      */
     public function build(): BuilderInterface
     {
+
         foreach ($this->catalogs as $catalog) {
             $catalogModel = new CatalogModel();
 
