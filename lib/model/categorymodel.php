@@ -28,5 +28,5 @@ class CategoryModel
     public $parentSection;
 
     /** @var ItemModel[] */
-    public $items;
+    public $items = [];
 }

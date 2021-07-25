@@ -8,6 +8,7 @@ use Chazov\Unimarket\Model\CatalogModel;
 use Chazov\Unimarket\Model\CategoryModel;
 use Chazov\Unimarket\Model\ItemModel;
 use \Chazov\Unimarket\Model\Response\CatalogResponse;
+use Countable;
 
 /**
  * Class CatalogResponseBuilder
@@ -122,7 +123,7 @@ class CatalogResponseBuilder implements BuilderInterface
             return;
         }
 
-        foreach ($categories as $key=>$category) {
+        foreach ($categories as $key => $category) {
             if (count($category->items) === 0) {
                 unset($categories[$key]);
             }
