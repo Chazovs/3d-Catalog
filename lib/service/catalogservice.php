@@ -37,4 +37,14 @@ class CatalogService
 
         return  $this->builder->setCatalogs($catalogs)->build()->getResult();
     }
+
+    /**
+     * @param int $productId
+     * @param int $iblockId
+     * @return string|null
+     */
+    public function getModelUrl(int $productId, int $iblockId): ?string
+    {
+        return $this->repository->getModelPath($productId, $iblockId);
+    }
 }
