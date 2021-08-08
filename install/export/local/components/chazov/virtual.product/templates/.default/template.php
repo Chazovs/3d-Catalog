@@ -11,7 +11,7 @@ if (null !== $arResult['MODEL_URL']) {
     <link rel="stylesheet" href="/virtual-product/TemplateData/style.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <button id="openModel"><?= GetMessage('OPEN_MODEL_BUTTON') ?></button>
+    <button id="openModel" class="btn btn-primary product-item-detail-buy-button"><?= GetMessage('OPEN_MODEL_BUTTON') ?></button>
     <div id="unity-container" class="unity-desktop">
     <span class="popup-window-close-icon popup-window-titlebar-close-icon" onclick="$('#product_3d').hide()"
           style="right: 20px; top: 10px;"></span>

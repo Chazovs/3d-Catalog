@@ -22,4 +22,3 @@ try {
 } catch (NotFoundException | LoaderException $exception) {
     AddMessage2Log($exception->getMessage());
 }
-
