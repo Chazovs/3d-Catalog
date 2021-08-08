@@ -43,7 +43,7 @@ class chazov_unimarket extends CModule
      */
     public function __construct()
     {
-        $this->MODULE_VERSION = '0.1';
+        $this->MODULE_VERSION = '0.1.1';
         $this->MODULE_VERSION_DATE = '08.08.2021';
         $this->MODULE_NAME = GetMessage('CHAZOV_MODULE_NAME');
         $this->MODULE_DESCRIPTION = GetMessage('CHAZOV_MODULE_DESCRIPTION');
