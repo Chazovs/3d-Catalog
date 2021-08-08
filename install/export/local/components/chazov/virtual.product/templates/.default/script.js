@@ -12,7 +12,6 @@ BX.ready(function () {
     openModel.click(function () {
         addAnswer.show(); // появление окна
     });
-});
 
 const container = document.querySelector("#unity-container");
 const canvas = document.querySelector("#unity-canvas");
@@ -79,9 +78,7 @@ script.onload = () => {
         progressBarFull.style.width = 100 * progress + "%";
     }).then((unityInstance) => {
         loadingBar.style.display = "none";
-        unityInstance.SendMessage('Main', 'SetBxSessId', BX.bitrix_sessid());
-        unityInstance.SendMessage('Main', 'SetSiteId', BX.message('SITE_ID'));
-        unityInstance.SendMessage('Main', 'SetModelPath', "sdfdsf");  /*<?= $arResult['MODEL_URL']?>*/
+        unityInstance.SendMessage('OnlyProduct', 'SetModelPath', window.__MODELPATH__);  /*<?= $arResult['MODEL_URL']?>*/
         fullscreenButton.onclick = () => {
             unityInstance.SetFullscreen(1);
         };
@@ -91,3 +88,5 @@ script.onload = () => {
 };
 
 document.body.appendChild(script);
+
+});

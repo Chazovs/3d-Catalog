@@ -16,6 +16,7 @@ try {
 
     /** @var CatalogService $catalogService */
     $catalogService = $uniContainer->get(CatalogService::class);
+
     $arResult['MODEL_URL']
         = $catalogService->getModelUrl($arParams['PRODUCT_ID'] ?? 0, $arParams['IBLOCK_ID'] ?? 0);
 } catch (NotFoundException | LoaderException $exception) {
