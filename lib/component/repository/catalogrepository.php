@@ -197,4 +197,14 @@ class CatalogRepository
 
         return 0;
     }
+
+    /**
+     * @param int $productId
+     * @param int $iblockId
+     * @return string|null
+     */
+    public function getModelPath(int $productId, int $iblockId): ?string
+    {
+        return $this->getFilePath($this->get3dModelFileId($productId, $iblockId));
+    }
 }

@@ -5,6 +5,8 @@ use Bitrix\Main\LoaderException;
 use Chazov\Unimarket\Component\Container\NotFoundException;
 use Chazov\Unimarket\Service\CatalogService;
 
+/** @var $arParams */
+
 try {
     if (!Loader::includeModule('chazov.unimarket')) {
         die();
