@@ -1,5 +1,5 @@
 <?php
-//for version 0.1.0
+//for version 0.1
 use Chazov\Unimarket\Component\Constants;
 
 CopyDirFiles(
